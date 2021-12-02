@@ -7,17 +7,15 @@ fun day1taskA() : Int {
     return File(inputfile).readLines()
         .map { it.toInt() }
         .windowed(2,1)
-        .filter { it[1] > it[0] }
+        .filter { (a,b) -> b > a }
         .count()
 }
-
 
 fun day1taskB() : Int {
     return File(inputfile).readLines()
         .map { it.toInt() }
-        .windowed(3,1)
-        .map { it.sum() }
-        .windowed(2,1)
-        .filter { it[1] > it[0] }
+        .windowed(4,1)
+        .filter { (a,b,c,d) -> d > a }
         .count()
 }
+
