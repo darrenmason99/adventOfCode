@@ -1,12 +1,5 @@
 import java.io.File
-class counter (
-    var value : Int
-        ) {
-    fun increment() {
-        println("Incrementing")
-        value++
-    }
-}
+
 val inputfile6 = "src/main/resources/inputdataday6.txt"
 
 fun day6taskA() : Long {
