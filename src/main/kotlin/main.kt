@@ -1,4 +1,4 @@
 fun main(args: Array<String>) {
-    println("Result is ${day7taskB()}")
+    println("Result is ${day8taskB()}")
 
 }
