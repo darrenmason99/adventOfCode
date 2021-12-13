@@ -22,18 +22,17 @@ fun day9taskB()  : Int {
         adjacent(depths, low.first, low.second).all {  it > valueAt(depths, low.first, low.second) }
     }
     val lp = lowPoints.size
-    var basins = mutableSetOf<Triple<Int,Int,Int>>()
-    var newbasins = lowPoints.mapIndexed  { idx, lowpoint ->
+
+    var lpbasins = lowPoints.mapIndexed  { idx, lowpoint ->
+        var basins = mutableSetOf<Triple<Int,Int,Int>>()
         println("$idx of $lp ${lowpoint.first} ${lowpoint.second}")
-        basin(depths, lowpoint.first, lowpoint.second, setOf())
-    }.toSet()
-    while (newbasins.isNotEmpty()) {
-        newbasins = newbasins.flatMap { basin(depths, it.first, it.second, basins) }.toSet()
-        basins.addAll(newbasins)
+        basin(depths, lowpoint.first, lowpoint.second, basins)
+        Pair(lowpoint, basins)
     }
 
+
     //println(basins)
-    val top3 = basins.map { it.size }.sorted().takeLast(3)
+    val top3 = lpbasins.map { it.second.size }.sorted().takeLast(3)
     return (top3[0] * top3[1] * top3[2])
 }
 
@@ -57,11 +56,15 @@ fun adjacentxy(depths : Array<CharArray>, x : Int, y : Int) : List<Triple<Int,In
     return a.filter { it.third != -1 }
 }
 
-fun basin(depths : Array<CharArray>, x : Int, y : Int, current: Set<Triple<Int,Int,Int>>) : Set<Triple<Int,Int,Int>> {
+fun basin(depths : Array<CharArray>, x : Int, y : Int, current: MutableSet<Triple<Int,Int,Int>>) {
     println("basin with $x, $y and $current")
+    val addPoint = Triple(x,y,valueAt(depths,x,y))
+    if (current.contains(addPoint)) return
+    current.add(addPoint)
+
     val adj = adjacentxy(depths, x, y)
         .filter { (it.third != 9)  }
-        
+        .forEach{ basin(depths, it.first, it.second, current)}
 
-    return adj.plus(Triple(x,y,valueAt(depths,x,y))).filter {  it !in current }.toSet()
+
 }
